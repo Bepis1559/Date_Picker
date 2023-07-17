@@ -1,9 +1,11 @@
 import { format } from "date-fns";
+import { useAtom } from "jotai";
 import { ReactElement } from "react";
+import { currentDateAtom } from "../context/date";
 
 export function DatePickerHeader(): ReactElement {
-  const currentDate = new Date();
-  const formattedDate = format(currentDate, "MMMM - yyyy");
+  const [today] = useAtom(currentDateAtom);
+  const formattedDate = format(today, "MMMM - yyyy");
   return (
     <div className="date-picker-header">
       <button type="button" className="prev-month-button month-button">

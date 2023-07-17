@@ -1,4 +1,6 @@
 import { atom } from "jotai";
 
-const currentDate = new Date();
-export const currentDateAtom = atom(currentDate);
+const today = new Date();
+today.setFullYear(2023);
+today.setMonth(1);
+export const currentDateAtom = atom(today);
