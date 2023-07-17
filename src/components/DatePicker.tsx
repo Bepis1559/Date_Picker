@@ -6,7 +6,6 @@ import { Dates } from "./Dates";
 type props = {
   isDatePickerHidden: boolean;
 };
-
 export function DatePicker({ isDatePickerHidden }: props): ReactElement {
   return (
     <div className={`${isDatePickerHidden ? "display-none" : "date-picker"}`}>
