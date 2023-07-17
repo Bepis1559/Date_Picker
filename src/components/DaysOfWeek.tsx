@@ -1,21 +1,22 @@
-import { ReactElement } from "react";
+import { ReactElement, useMemo } from "react";
 
-const daysOfWeek = [
-  { id: 0, day: "Sun" },
-  { id: 1, day: "Mon" },
-  { id: 2, day: "Tue" },
-  { id: 3, day: "Wed" },
-  { id: 4, day: "Thu" },
-  { id: 5, day: "Fri" },
-  { id: 6, day: "Sat" },
-];
+enum daysOfWeek {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
 
 export function DaysOfWeek(): ReactElement {
-  return (
-    <div className="date-picker-grid-header date-picker-grid">
-      {daysOfWeek.map(({ id, day }) => (
-        <div key={id}>{day}</div>
-      ))}
-    </div>
-  );
+  const days = useMemo(() => {
+    const daysArray: ReactElement[] = [];
+    for (let i = 0; i < Object.keys(daysOfWeek).length / 2; i++) {
+      daysArray.push(<div key={i}>{daysOfWeek[i]}</div>);
+    }
+    return daysArray;
+  }, []);
+  return <div className="date-picker-grid-header date-picker-grid">{days}</div>;
 }
