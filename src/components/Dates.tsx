@@ -1,8 +1,12 @@
-import { ReactElement, useMemo, useRef } from "react";
+import { ReactElement, useRef } from "react";
 import { useDate } from "../hooks/useDate";
+import { howManyDatesToDisplayFromNextMonth } from "../helpers/CalendarDateFunctionality";
 
 export function Dates(): ReactElement {
   const gridColumns = useRef(7);
+  const datesInFourRowsGrid = useRef(4 * gridColumns.current);
+  const datesInFiveRowsGrid = useRef(5 * gridColumns.current);
+  const datesInSixRowsGrid = useRef(6 * gridColumns.current);
   const [
     // Sunday is 0 and Saturday is 6
     firstDateOfCurrentMonth_As_DayOfWeek,
@@ -11,22 +15,16 @@ export function Dates(): ReactElement {
     datesOfCurrentMonth,
     datesOfNextMonth,
   ] = useDate();
-  const datesToTakeFromPrevMonth = datesOfPrevMonth.slice(
+  const numberOfDatesToTakeFromPrevMonth = datesOfPrevMonth.slice(
     -firstDateOfCurrentMonth_As_DayOfWeek,
   );
-
-  const numberOfDatesFromNextMonth = useMemo(
-    () => gridColumns.current - lastDateOfCurrentMonth_As_DayOfWeek,
-    [gridColumns, lastDateOfCurrentMonth_As_DayOfWeek],
+  const numberOfdatesToTakeFromNextMonth = howManyDatesToDisplayFromNextMonth(
+    numberOfDatesToTakeFromPrevMonth.length,
+    datesOfCurrentMonth.length,
   );
-  const datesToTakeFromNextMonth = datesOfNextMonth.slice(
-    0,
-    numberOfDatesFromNextMonth + 1,
-  );
-
   return (
     <div className="date-picker-grid-dates date-picker-grid">
-      {datesToTakeFromPrevMonth.map((date) => (
+      {numberOfDatesToTakeFromPrevMonth.map((date) => (
         <button
           type="button"
           key={date}
