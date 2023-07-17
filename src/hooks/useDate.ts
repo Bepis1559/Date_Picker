@@ -1,12 +1,21 @@
 import { addMonths, format, lastDayOfMonth, subMonths } from "date-fns";
 import { useAtom } from "jotai";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { currentDateAtom } from "../context/date";
 import { howManyDatesToDisplayFromNextMonth } from "../helpers/CalendarDateFunctionality";
 
-// add dependancy for the useMemo
 export function useDate(): useDateResultType {
   const [today] = useAtom(currentDateAtom);
+  const getPopulatedArray = useCallback(
+    (start: number, end: number): number[] => {
+      const result: number[] = [];
+      for (let i = start; i <= end; i++) {
+        result.push(i);
+      }
+      return result;
+    },
+    [],
+  );
 
   // previous month
   //
@@ -24,7 +33,7 @@ export function useDate(): useDateResultType {
         firstDateOfPrevMonth.getDate(),
         lastDateOfPrevMonth.getDate(),
       ),
-    [firstDateOfPrevMonth, lastDateOfPrevMonth],
+    [firstDateOfPrevMonth, lastDateOfPrevMonth, getPopulatedArray],
   );
 
   //
@@ -45,7 +54,7 @@ export function useDate(): useDateResultType {
         firstDateOfCurrentMonth.getDate(),
         lastDateOfMonth.getDate(),
       ),
-    [firstDateOfCurrentMonth, lastDateOfMonth],
+    [firstDateOfCurrentMonth, lastDateOfMonth, getPopulatedArray],
   );
 
   //
@@ -66,22 +75,27 @@ export function useDate(): useDateResultType {
         lastDateOfNextMonth.getDate(),
       ),
 
-    [firstDateOfNextMonth, lastDateOfNextMonth],
+    [firstDateOfNextMonth, lastDateOfNextMonth, getPopulatedArray],
   );
   //
   //
   //
   // the results to be returned as arrays
-  const datesToTakeFromPrevMonth = datesOfPrevMonth.slice(
-    -firstDateOfCurrentMonth_As_DayOfWeek,
+  const datesToTakeFromPrevMonth = useMemo(
+    () => datesOfPrevMonth.slice(-firstDateOfCurrentMonth_As_DayOfWeek),
+    [datesOfPrevMonth, firstDateOfCurrentMonth_As_DayOfWeek],
   );
-  const numberOfDaysToTakeFromNextMonth = howManyDatesToDisplayFromNextMonth(
-    datesToTakeFromPrevMonth.length,
-    datesOfCurrentMonth.length,
+  const numberOfDaysToTakeFromNextMonth = useMemo(
+    () =>
+      howManyDatesToDisplayFromNextMonth(
+        datesToTakeFromPrevMonth.length,
+        datesOfCurrentMonth.length,
+      ),
+    [datesToTakeFromPrevMonth, datesOfCurrentMonth],
   );
-  const datesToTakeFromNextMonth = datesOfNextMonth.slice(
-    0,
-    numberOfDaysToTakeFromNextMonth,
+  const datesToTakeFromNextMonth = useMemo(
+    () => datesOfNextMonth.slice(0, numberOfDaysToTakeFromNextMonth),
+    [datesOfNextMonth, numberOfDaysToTakeFromNextMonth],
   );
 
   return [
@@ -89,12 +103,4 @@ export function useDate(): useDateResultType {
     datesOfCurrentMonth,
     datesToTakeFromNextMonth,
   ];
-}
-
-function getPopulatedArray(start: number, end: number): number[] {
-  const result: number[] = [];
-  for (let i = start; i <= end; i++) {
-    result.push(i);
-  }
-  return result;
 }
