@@ -76,7 +76,8 @@ body {
   border: 1px solid hsl(200, 100%, 50%);
 }
 
-.date-picker-grid-dates > *:hover {
+.date-picker-grid-dates > *:is(:hover, :focus-visible) {
+  outline: transparent;
   background-color: hsl(200, 100%, 80%);
   color: black;
 }

@@ -2,8 +2,12 @@ import { ReactElement } from "react";
 import { useDate } from "../hooks/useDate";
 import { useAtom } from "jotai";
 import { currentDateAtom } from "../context/date";
+import { SingleDate_Button } from "./SingleDate_Button";
 
 export function Dates(): ReactElement {
+  // START HANDLING SELECTED DATE
+  // class - .date.selected
+  // also changes the DatePickerButton
   const [today] = useAtom(currentDateAtom);
   const [
     datesToTakeFromPrevMonth,
@@ -15,28 +19,17 @@ export function Dates(): ReactElement {
   return (
     <div className="date-picker-grid-dates date-picker-grid">
       {datesToTakeFromPrevMonth.map((date) => (
-        <button
-          type="button"
-          key={date}
-          className="date date-picker-other-month-date">
-          {date}
-        </button>
+        <SingleDate_Button key={date} date={date} />
       ))}
       {datesOfCurrentMonth.map((date) => (
-        <button
-          type="button"
+        <SingleDate_Button
           key={date}
-          className={`${date == todaysDate ? "date today" : "date"}`}>
-          {date}
-        </button>
+          date={date}
+          classes={`${date == todaysDate ? "date today" : "date"}`}
+        />
       ))}
       {datesToTakeFromNextMonth.map((date) => (
-        <button
-          type="button"
-          key={date}
-          className="date date-picker-other-month-date">
-          {date}
-        </button>
+        <SingleDate_Button key={date} date={date} />
       ))}
     </div>
   );
