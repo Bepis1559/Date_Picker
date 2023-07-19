@@ -1,14 +1,14 @@
-import { ReactElement, useState, MouseEvent } from "react";
+import { ReactElement, useState, MouseEvent, useEffect } from "react";
 import { useDate } from "../hooks/useDate";
 import { useAtom } from "jotai";
-import { currentDateAtom } from "../context/date";
+import { currentDateAtom, currentDayAtom } from "../context/date";
 import { SingleDate_Button } from "./SingleDate_Button";
 import { useIds } from "../hooks/useIds";
 
 export function Dates(): ReactElement {
   // START HANDLING SELECTED DATE
-  // class - .date.selected
   // also changes the DatePickerButton
+  // const []
   const [
     datesToTakeFromPrevMonth,
     datesOfCurrentMonth,
@@ -21,16 +21,19 @@ export function Dates(): ReactElement {
 
   const [today] = useAtom(currentDateAtom);
   const todaysDate = today.getDate();
-  const todaysDateId = useIds(1);
-  const [selectedButtonId, setSelectedButtonId] = useState(
-    todaysDateId.toString(),
-  );
+  const [, setCurrentDay] = useAtom(currentDayAtom);
 
+  const [selectedButtonId, setSelectedButtonId] = useState(
+    currentMonthDatesIds[todaysDate - 1].toString(),
+  );
+  // to make sure the current date is selected when the app
+  // first mounts or when the file is saved
+  useEffect(() => {
+    setSelectedButtonId(currentMonthDatesIds[todaysDate - 1]);
+  }, [currentMonthDatesIds, todaysDate]);
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     setSelectedButtonId(e.currentTarget.id);
-    // console.log(e.currentTarget.innerText);
-    // console.log("e.currentTarget.id : " + e.currentTarget.id);
-    // console.log("selectedButtonId : " + selectedButtonId);
+    setCurrentDay(Number(e.currentTarget.innerText));
   }
 
   return (
@@ -50,7 +53,9 @@ export function Dates(): ReactElement {
           key={date}
           date={date}
           id={`${
-            date == todaysDate ? todaysDateId[0] : currentMonthDatesIds[index]
+            date == todaysDate
+              ? currentMonthDatesIds[todaysDate - 1]
+              : currentMonthDatesIds[index]
           }`}
           handleClick={handleClick}
           classes="date"
