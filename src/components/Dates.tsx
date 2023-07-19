@@ -1,14 +1,14 @@
 import { ReactElement, useState, MouseEvent, useEffect } from "react";
 import { useDate } from "../hooks/useDate";
 import { useAtom } from "jotai";
-import { currentDateAtom, currentDayAtom } from "../context/date";
+import { currentDateAtom } from "../context/date";
 import { SingleDate_Button } from "./SingleDate_Button";
 import { useIds } from "../hooks/useIds";
 
 export function Dates(): ReactElement {
   // START HANDLING SELECTED DATE
   // also changes the DatePickerButton
-  // const []
+  // October is not ok
   const [
     datesToTakeFromPrevMonth,
     datesOfCurrentMonth,
@@ -19,9 +19,8 @@ export function Dates(): ReactElement {
   const currentMonthDatesIds = useIds(datesOfCurrentMonth.length);
   const nextMonthDatesIds = useIds(datesToTakeFromNextMonth.length);
 
-  const [today] = useAtom(currentDateAtom);
+  const [today, setToday] = useAtom(currentDateAtom);
   const todaysDate = today.getDate();
-  const [, setCurrentDay] = useAtom(currentDayAtom);
 
   const [selectedButtonId, setSelectedButtonId] = useState(
     currentMonthDatesIds[todaysDate - 1].toString(),
@@ -33,13 +32,22 @@ export function Dates(): ReactElement {
   }, [currentMonthDatesIds, todaysDate]);
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
     setSelectedButtonId(e.currentTarget.id);
-    setCurrentDay(Number(e.currentTarget.innerText));
+    // const dayOfSelectedDate = Number(e.currentTarget.innerText);
+    // const monthOfSelectedDate = Number(
+    //   e.currentTarget.getAttribute("data-month"),
+    // );
+    // setToday(new Date(2023, monthOfSelectedDate, dayOfSelectedDate));
   }
+  // testing with useEffect ; delete it
+  // useEffect(() => {
+  //   console.log(today);
+  // }, [today]);
 
   return (
     <div className="date-picker-grid-dates date-picker-grid">
       {datesToTakeFromPrevMonth.map((date, index) => (
         <SingleDate_Button
+          month={today.getMonth() - 1}
           selectedButtonId={selectedButtonId}
           id={prevMonthDatesIds[index]}
           handleClick={handleClick}
@@ -49,6 +57,7 @@ export function Dates(): ReactElement {
       ))}
       {datesOfCurrentMonth.map((date, index) => (
         <SingleDate_Button
+          month={today.getMonth()}
           selectedButtonId={selectedButtonId}
           key={date}
           date={date}
@@ -63,6 +72,7 @@ export function Dates(): ReactElement {
       ))}
       {datesToTakeFromNextMonth.map((date, index) => (
         <SingleDate_Button
+          month={today.getMonth() + 1}
           selectedButtonId={selectedButtonId}
           id={nextMonthDatesIds[index]}
           handleClick={handleClick}
