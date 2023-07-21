@@ -5,7 +5,10 @@ import { currentDateAtom } from "../context/date";
 import { howManyDatesToDisplayFromNextMonth } from "../helpers/CalendarDateFunctionality";
 
 export function useDate(): useDateResultType {
+  // the shared today among components
   const [today] = useAtom(currentDateAtom);
+
+  // function to get the date arrays populated
   const getPopulatedArray = useCallback(
     (start: number, end: number): number[] => {
       const result: number[] = [];
