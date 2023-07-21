@@ -1,9 +1,13 @@
-import { ReactElement, useState, MouseEvent, useEffect } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useDate } from "../hooks/useDate";
 import { useAtom } from "jotai";
-import { currentDateAtom } from "../context/date";
-import { SingleDate_Button } from "./SingleDate_Button";
+import { currentDateAtom, datePickerButtonDayAtom } from "../context/date";
 import { useIds } from "../hooks/useIds";
+import { handleClick } from "../helpers/datesClickEvent";
+import {
+  handleClasses,
+  handleClassesForCurrentMonth,
+} from "../helpers/handleClasses";
 
 export function Dates(): ReactElement {
   // START HANDLING SELECTED DATE
@@ -14,12 +18,13 @@ export function Dates(): ReactElement {
     datesOfCurrentMonth,
     datesToTakeFromNextMonth,
   ] = useDate();
+  const [, setCurrentDayForButton] = useAtom(datePickerButtonDayAtom);
 
   const prevMonthDatesIds = useIds(datesToTakeFromPrevMonth.length);
   const currentMonthDatesIds = useIds(datesOfCurrentMonth.length);
   const nextMonthDatesIds = useIds(datesToTakeFromNextMonth.length);
 
-  const [today, setToday] = useAtom(currentDateAtom);
+  const [today] = useAtom(currentDateAtom);
   const todaysDate = today.getDate();
 
   const [selectedButtonId, setSelectedButtonId] = useState(
@@ -30,55 +35,50 @@ export function Dates(): ReactElement {
   useEffect(() => {
     setSelectedButtonId(currentMonthDatesIds[todaysDate - 1]);
   }, [currentMonthDatesIds, todaysDate]);
-  function handleClick(e: MouseEvent<HTMLButtonElement>) {
-    setSelectedButtonId(e.currentTarget.id);
-    // const dayOfSelectedDate = Number(e.currentTarget.innerText);
-    // const monthOfSelectedDate = Number(
-    //   e.currentTarget.getAttribute("data-month"),
-    // );
-    // setToday(new Date(2023, monthOfSelectedDate, dayOfSelectedDate));
-  }
-  // testing with useEffect ; delete it
-  // useEffect(() => {
-  //   console.log(today);
-  // }, [today]);
 
   return (
     <div className="date-picker-grid-dates date-picker-grid">
       {datesToTakeFromPrevMonth.map((date, index) => (
-        <SingleDate_Button
-          month={today.getMonth() - 1}
-          selectedButtonId={selectedButtonId}
-          id={prevMonthDatesIds[index]}
-          handleClick={handleClick}
+        <button
           key={date}
-          date={date}
-        />
+          onClick={(e) =>
+            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+          }
+          data-cryptoid={prevMonthDatesIds[index]}
+          type="button"
+          className={handleClasses(selectedButtonId, index, prevMonthDatesIds)}>
+          {date}
+        </button>
       ))}
       {datesOfCurrentMonth.map((date, index) => (
-        <SingleDate_Button
-          month={today.getMonth()}
-          selectedButtonId={selectedButtonId}
+        <button
           key={date}
-          date={date}
-          id={`${
-            date == todaysDate
-              ? currentMonthDatesIds[todaysDate - 1]
-              : currentMonthDatesIds[index]
-          }`}
-          handleClick={handleClick}
-          classes="date"
-        />
+          data-month={today.getMonth()}
+          onClick={(e) =>
+            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+          }
+          data-cryptoid={currentMonthDatesIds[index]}
+          type="button"
+          className={handleClassesForCurrentMonth(
+            selectedButtonId,
+            index,
+            currentMonthDatesIds,
+          )}>
+          {date}
+        </button>
       ))}
+
       {datesToTakeFromNextMonth.map((date, index) => (
-        <SingleDate_Button
-          month={today.getMonth() + 1}
-          selectedButtonId={selectedButtonId}
-          id={nextMonthDatesIds[index]}
-          handleClick={handleClick}
+        <button
           key={date}
-          date={date}
-        />
+          onClick={(e) =>
+            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+          }
+          data-cryptoid={nextMonthDatesIds[index]}
+          type="button"
+          className={handleClasses(selectedButtonId, index, nextMonthDatesIds)}>
+          {date}
+        </button>
       ))}
     </div>
   );

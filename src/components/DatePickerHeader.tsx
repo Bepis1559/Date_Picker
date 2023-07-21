@@ -6,11 +6,16 @@ import { currentDateAtom } from "../context/date";
 export function DatePickerHeader(): ReactElement {
   const [today, setToday] = useAtom(currentDateAtom);
   const formattedDate = format(today, "MMMM - yyyy");
+  //  DAY ALWAYS GOES TO FIRST FOR SOME REASON,FIX IT
   function handleForwardsButton() {
-    setToday(new Date(2023, today.getMonth() + 1));
+    setToday(
+      new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()),
+    );
   }
   function handleBackwardsButton() {
-    setToday(new Date(2023, today.getMonth() - 1));
+    setToday(
+      new Date(today.getFullYear(), today.getMonth() - 1, today.getDate()),
+    );
   }
   return (
     <div className="date-picker-header">
