@@ -16,7 +16,9 @@ export function Dates(): ReactElement {
     datesOfCurrentMonth,
     datesToTakeFromNextMonth,
   ] = useDate();
-  const [, setCurrentDayForButton] = useAtom(datePickerButtonDateAtom);
+  const [dateForDatePickerButton, setDateForDatePickerButton] = useAtom(
+    datePickerButtonDateAtom,
+  );
 
   const prevMonthDatesIds = useIds(datesToTakeFromPrevMonth.length);
   const currentMonthDatesIds = useIds(datesOfCurrentMonth.length);
@@ -25,7 +27,7 @@ export function Dates(): ReactElement {
   const [today] = useAtom(currentDateAtom);
   const todaysDate = today.getDate();
 
-  const [selectedButtonId, setSelectedButtonId] = useState(
+  const [, setSelectedButtonId] = useState(
     currentMonthDatesIds[todaysDate - 1].toString(),
   );
   // to make sure the current date is selected when the app
@@ -41,14 +43,19 @@ export function Dates(): ReactElement {
         <button
           key={date.getDate()}
           onClick={(e) =>
-            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+            handleClick(e, setSelectedButtonId, setDateForDatePickerButton)
           }
           data-date={date.getDate()}
           data-month={date.getMonth()}
           data-year={date.getFullYear()}
           data-cryptoid={prevMonthDatesIds[index]}
           type="button"
-          className={handleClasses(selectedButtonId, index, prevMonthDatesIds)}>
+          className={handleClasses(
+            dateForDatePickerButton,
+            date.getDate(),
+            date.getMonth(),
+            date.getFullYear(),
+          )}>
           {date.getDate()}
         </button>
       ))}
@@ -56,7 +63,7 @@ export function Dates(): ReactElement {
         <button
           key={date.getDate()}
           onClick={(e) =>
-            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+            handleClick(e, setSelectedButtonId, setDateForDatePickerButton)
           }
           data-cryptoid={currentMonthDatesIds[index]}
           data-date={date.getDate()}
@@ -64,12 +71,10 @@ export function Dates(): ReactElement {
           data-year={date.getFullYear()}
           type="button"
           className={handleClassesForCurrentMonth(
+            dateForDatePickerButton,
             date.getDate(),
             date.getMonth(),
             date.getFullYear(),
-            selectedButtonId,
-            index,
-            currentMonthDatesIds,
           )}>
           {date.getDate()}
         </button>
@@ -79,14 +84,19 @@ export function Dates(): ReactElement {
         <button
           key={date.getDate()}
           onClick={(e) =>
-            handleClick(e, setSelectedButtonId, setCurrentDayForButton)
+            handleClick(e, setSelectedButtonId, setDateForDatePickerButton)
           }
           data-cryptoid={nextMonthDatesIds[index]}
           data-date={date.getDate()}
           data-month={date.getMonth()}
           data-year={date.getFullYear()}
           type="button"
-          className={handleClasses(selectedButtonId, index, nextMonthDatesIds)}>
+          className={handleClasses(
+            dateForDatePickerButton,
+            date.getDate(),
+            date.getMonth(),
+            date.getFullYear(),
+          )}>
           {date.getDate()}
         </button>
       ))}

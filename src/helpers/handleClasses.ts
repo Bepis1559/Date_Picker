@@ -1,3 +1,4 @@
+const today = new Date();
 const dateClasses = {
   justDate: "date",
   otherMonthClasses: "date date-picker-other-month-date",
@@ -7,36 +8,46 @@ const dateClasses = {
   selectedDate: "date selected",
 };
 
-export function handleClasses(
-  selectedButtonId: string,
-  index: number,
-  datesIds: string[],
-) {
-  const { otherMonthClasses, selectedOtherMonthClasses } = dateClasses;
-  return selectedButtonId !== datesIds[index]
-    ? otherMonthClasses
-    : selectedOtherMonthClasses;
-}
-const today = new Date();
-
-export function handleClassesForCurrentMonth(
+const isSelected = (
+  dateForDatePickerButton: Date,
   day: number,
   month: number,
   year: number,
-  selectedButtonId: string,
-  index: number,
-  datesIds: string[],
+) =>
+  dateForDatePickerButton.getDate() === day &&
+  dateForDatePickerButton.getMonth() === month &&
+  dateForDatePickerButton.getFullYear() === year;
+
+export function handleClasses(
+  dateForDatePickerButton: Date,
+  day: number,
+  month: number,
+  year: number,
+) {
+  const isDateSelected = isSelected(dateForDatePickerButton, day, month, year);
+  const { otherMonthClasses, selectedOtherMonthClasses } = dateClasses;
+  return isDateSelected ? selectedOtherMonthClasses : otherMonthClasses;
+}
+
+export function handleClassesForCurrentMonth(
+  dateForDatePickerButton: Date,
+  day: number,
+  month: number,
+  year: number,
 ) {
   const { justDate, todaysDate, todaysDateSelected, selectedDate } =
     dateClasses;
-  const isSelected = selectedButtonId === datesIds[index];
+  const isDateSelected = isSelected(dateForDatePickerButton, day, month, year);
+  dateForDatePickerButton.getDate() === day &&
+    dateForDatePickerButton.getMonth() === month &&
+    dateForDatePickerButton.getFullYear() === year;
   const isItToday =
     today.getDate() == day &&
     today.getMonth() == month &&
     today.getFullYear() == year;
   if (isItToday) {
-    return isSelected ? todaysDateSelected : todaysDate;
+    return isDateSelected ? todaysDateSelected : todaysDate;
   } else {
-    return isSelected ? selectedDate : justDate;
+    return isDateSelected ? selectedDate : justDate;
   }
 }
