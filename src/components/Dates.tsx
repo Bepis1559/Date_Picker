@@ -61,6 +61,9 @@ export function Dates(): ReactElement {
           data-cryptoid={currentMonthDatesIds[index]}
           type="button"
           className={handleClassesForCurrentMonth(
+            date.getDate(),
+            date.getMonth(),
+            date.getFullYear(),
             selectedButtonId,
             index,
             currentMonthDatesIds,
