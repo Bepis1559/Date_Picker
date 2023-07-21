@@ -6,7 +6,7 @@ import { currentDateAtom } from "../context/date";
 export function DatePickerHeader(): ReactElement {
   const [today, setToday] = useAtom(currentDateAtom);
   const formattedDate = format(today, "MMMM - yyyy");
-  //  DAY ALWAYS GOES TO FIRST FOR SOME REASON,FIX IT
+  //  SHOULD NOT INFLUENCE THE SELECTED DATE
   function handleForwardsButton() {
     setToday(
       new Date(today.getFullYear(), today.getMonth() + 1, today.getDate()),
