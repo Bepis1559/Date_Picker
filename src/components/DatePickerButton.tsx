@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { ReactElement } from "react";
+import { ReactElement, useMemo } from "react";
 import { datePickerButtonDateAtom } from "../context/datePickerButton";
 import { format } from "date-fns";
 
@@ -12,7 +12,10 @@ export function DatePickerButton({
 }: props): ReactElement {
   const [currentDateForButton] = useAtom(datePickerButtonDateAtom);
   const hideDatePicker = () => setIsDatePickerHidden((prev) => !prev);
-  const formattedDate = format(currentDateForButton, "MMMM do, yyyy");
+  const formattedDate = useMemo(
+    () => format(currentDateForButton, "MMMM do, yyyy"),
+    [currentDateForButton],
+  );
   return (
     <button
       onClick={hideDatePicker}

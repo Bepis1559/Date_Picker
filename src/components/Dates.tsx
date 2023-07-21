@@ -35,7 +35,7 @@ export function Dates(): ReactElement {
   }, [currentMonthDatesIds, todaysDate]);
 
   return (
-    // SEPARATE THE BUTTONS IN A COMPONENT AGAIN
+    // * SEPARATE THE BUTTONS IN A COMPONENT AGAIN
     <div className="date-picker-grid-dates date-picker-grid">
       {datesToTakeFromPrevMonth.map((date, index) => (
         <button

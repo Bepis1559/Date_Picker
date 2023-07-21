@@ -19,9 +19,5 @@ export function howManyDatesToDisplayFromNextMonth(
     datesToTakeFromPrevMonth,
     datesOfCurrentMonth,
   );
-  // console.log("datesToTakeFromPrevMonth : ", datesToTakeFromPrevMonth);
-  // console.log(datesOfCurrentMonth);
-  // console.log(gridRows);
-  // console.log(datesToTakeFromPrevMonth + datesOfCurrentMonth);
   return gridRows * 7 - (datesToTakeFromPrevMonth + datesOfCurrentMonth);
 }
