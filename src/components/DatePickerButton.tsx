@@ -1,7 +1,7 @@
-import { format } from "date-fns";
 import { useAtom } from "jotai";
 import { ReactElement } from "react";
-import { currentDateAtom, datePickerButtonDayAtom } from "../context/date";
+import { datePickerButtonDateAtom } from "../context/datePickerButton";
+import { format } from "date-fns";
 
 type props = {
   setIsDatePickerHidden: React.Dispatch<React.SetStateAction<boolean>>;
@@ -10,20 +10,15 @@ type props = {
 export function DatePickerButton({
   setIsDatePickerHidden,
 }: props): ReactElement {
-  const [today] = useAtom(currentDateAtom);
-  const [currentDayForButton] = useAtom(datePickerButtonDayAtom);
-  const formattedDate = format(today, "MMMM do,yyyy");
+  const [currentDateForButton] = useAtom(datePickerButtonDateAtom);
   const hideDatePicker = () => setIsDatePickerHidden((prev) => !prev);
+  const formattedDate = format(currentDateForButton, "MMMM do, yyyy");
   return (
     <button
       onClick={hideDatePicker}
       type="button"
       className="date-picker-button">
-      {`${format(
-        new Date(today.getFullYear(), today.getMonth()),
-        "MMMM",
-      )},${currentDayForButton}th,${today.getFullYear()}`}
-      {/* {formattedDate} */}
+      {formattedDate}
     </button>
   );
 }
