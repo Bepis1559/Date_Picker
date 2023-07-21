@@ -53,8 +53,6 @@ export function Dates(): ReactElement {
       {datesOfCurrentMonth.map((date, index) => (
         <button
           key={date.getDate()}
-          // data-month={date.getMonth()}
-          // data-year={date.getFullYear()}
           onClick={(e) =>
             handleClick(e, setSelectedButtonId, setCurrentDayForButton)
           }

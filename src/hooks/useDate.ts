@@ -12,7 +12,10 @@ export function useDate(): useDateResultType {
   const getPopulatedArray = useCallback(
     (startDate: Date, endDate: Date): Date[] => {
       const result: Date[] = [];
-      const currentDate = new Date(startDate);
+      const currentDate = new Date(startDate.getTime());
+      // normalizing the time zone offsets
+      currentDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
       while (currentDate <= endDate) {
         result.push(new Date(currentDate));
         currentDate.setDate(currentDate.getDate() + 1);
@@ -75,7 +78,10 @@ export function useDate(): useDateResultType {
   //
   // the results to be returned as arrays
   const datesToTakeFromPrevMonth = useMemo(
-    () => datesOfPrevMonth.slice(-firstDateOfCurrentMonth_As_DayOfWeek),
+    () =>
+      firstDateOfCurrentMonth_As_DayOfWeek == 0
+        ? []
+        : datesOfPrevMonth.slice(-firstDateOfCurrentMonth_As_DayOfWeek),
     [datesOfPrevMonth, firstDateOfCurrentMonth_As_DayOfWeek],
   );
   const numberOfDaysToTakeFromNextMonth = useMemo(
