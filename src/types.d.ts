@@ -1,5 +1,5 @@
 type useDateResultType = [
-  datesToTakeFromPrevMonth: number[],
-  datesOfCurrentMonth: number[],
-  datesToTakeFromNextMonth: number[],
+  datesToTakeFromPrevMonth: Date[],
+  datesOfCurrentMonth: Date[],
+  datesToTakeFromNextMonth: Date[],
 ];

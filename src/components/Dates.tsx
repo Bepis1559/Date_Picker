@@ -40,20 +40,21 @@ export function Dates(): ReactElement {
     <div className="date-picker-grid-dates date-picker-grid">
       {datesToTakeFromPrevMonth.map((date, index) => (
         <button
-          key={date}
+          key={date.getDate()}
           onClick={(e) =>
             handleClick(e, setSelectedButtonId, setCurrentDayForButton)
           }
           data-cryptoid={prevMonthDatesIds[index]}
           type="button"
           className={handleClasses(selectedButtonId, index, prevMonthDatesIds)}>
-          {date}
+          {date.getDate()}
         </button>
       ))}
       {datesOfCurrentMonth.map((date, index) => (
         <button
-          key={date}
-          data-month={today.getMonth()}
+          key={date.getDate()}
+          // data-month={date.getMonth()}
+          // data-year={date.getFullYear()}
           onClick={(e) =>
             handleClick(e, setSelectedButtonId, setCurrentDayForButton)
           }
@@ -64,20 +65,20 @@ export function Dates(): ReactElement {
             index,
             currentMonthDatesIds,
           )}>
-          {date}
+          {date.getDate()}
         </button>
       ))}
 
       {datesToTakeFromNextMonth.map((date, index) => (
         <button
-          key={date}
+          key={date.getDate()}
           onClick={(e) =>
             handleClick(e, setSelectedButtonId, setCurrentDayForButton)
           }
           data-cryptoid={nextMonthDatesIds[index]}
           type="button"
           className={handleClasses(selectedButtonId, index, nextMonthDatesIds)}>
-          {date}
+          {date.getDate()}
         </button>
       ))}
     </div>

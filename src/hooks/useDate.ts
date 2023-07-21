@@ -10,10 +10,12 @@ export function useDate(): useDateResultType {
 
   // function to get the date arrays populated
   const getPopulatedArray = useCallback(
-    (start: number, end: number): number[] => {
-      const result: number[] = [];
-      for (let i = start; i <= end; i++) {
-        result.push(i);
+    (startDate: Date, endDate: Date): Date[] => {
+      const result: Date[] = [];
+      const currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        result.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
       }
       return result;
     },
@@ -31,11 +33,7 @@ export function useDate(): useDateResultType {
   );
   const lastDateOfPrevMonth = lastDayOfMonth(subMonths(today, 1));
   const datesOfPrevMonth = useMemo(
-    () =>
-      getPopulatedArray(
-        firstDateOfPrevMonth.getDate(),
-        lastDateOfPrevMonth.getDate(),
-      ),
+    () => getPopulatedArray(firstDateOfPrevMonth, lastDateOfPrevMonth),
     [firstDateOfPrevMonth, lastDateOfPrevMonth, getPopulatedArray],
   );
 
@@ -52,11 +50,7 @@ export function useDate(): useDateResultType {
   const lastDateOfMonth = lastDayOfMonth(today);
   const firstDateOfCurrentMonth_As_DayOfWeek = firstDateOfCurrentMonth.getDay();
   const datesOfCurrentMonth = useMemo(
-    () =>
-      getPopulatedArray(
-        firstDateOfCurrentMonth.getDate(),
-        lastDateOfMonth.getDate(),
-      ),
+    () => getPopulatedArray(firstDateOfCurrentMonth, lastDateOfMonth),
     [firstDateOfCurrentMonth, lastDateOfMonth, getPopulatedArray],
   );
 
@@ -72,11 +66,7 @@ export function useDate(): useDateResultType {
   );
   const lastDateOfNextMonth = lastDayOfMonth(addMonths(today, 1));
   const datesOfNextMonth = useMemo(
-    () =>
-      getPopulatedArray(
-        firstDateOfNextMonth.getDate(),
-        lastDateOfNextMonth.getDate(),
-      ),
+    () => getPopulatedArray(firstDateOfNextMonth, lastDateOfNextMonth),
 
     [firstDateOfNextMonth, lastDateOfNextMonth, getPopulatedArray],
   );
