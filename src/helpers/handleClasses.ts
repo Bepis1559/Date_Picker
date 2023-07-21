@@ -18,7 +18,7 @@ const isSelected = (
   dateForDatePickerButton.getMonth() === month &&
   dateForDatePickerButton.getFullYear() === year;
 
-export function handleClasses(
+export function handleClassesForNonCurrentMonth(
   dateForDatePickerButton: Date,
   day: number,
   month: number,

@@ -6,7 +6,7 @@ import { datePickerButtonDateAtom } from "../context/datePickerButton";
 import { useIds } from "../hooks/useIds";
 import { handleClick } from "../helpers/datesClickEvent";
 import {
-  handleClasses,
+  handleClassesForNonCurrentMonth,
   handleClassesForCurrentMonth,
 } from "../helpers/handleClasses";
 
@@ -50,7 +50,7 @@ export function Dates(): ReactElement {
           data-year={date.getFullYear()}
           data-cryptoid={prevMonthDatesIds[index]}
           type="button"
-          className={handleClasses(
+          className={handleClassesForNonCurrentMonth(
             dateForDatePickerButton,
             date.getDate(),
             date.getMonth(),
@@ -91,7 +91,7 @@ export function Dates(): ReactElement {
           data-month={date.getMonth()}
           data-year={date.getFullYear()}
           type="button"
-          className={handleClasses(
+          className={handleClassesForNonCurrentMonth(
             dateForDatePickerButton,
             date.getDate(),
             date.getMonth(),
