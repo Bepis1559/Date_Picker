@@ -1,32 +1,35 @@
-import { ReactElement, MouseEvent } from "react";
+import { ReactElement } from "react";
 
-type props = {
-  date: number;
-  classes?: string;
-  id: string;
-  selectedButtonId: string;
-  month: number;
-  handleClick: (e: MouseEvent<HTMLButtonElement>) => void;
-};
-
-export function SingleDate_Button({
-  date,
-  classes = "date date-picker-other-month-date",
-  selectedButtonId,
-  id,
-  month,
-  handleClick,
-}: props): ReactElement {
+export function SingleDate_Button(
+  props: SingleDate_Button_Props,
+): ReactElement {
+  const {
+    handleClick,
+    setSelectedButtonId,
+    setDateForDatePickerButton,
+    handleClasses,
+    cryptoId,
+    date,
+    dateForDatePickerButton,
+  } = props;
+  const classes = handleClasses(
+    dateForDatePickerButton,
+    date.getDate(),
+    date.getMonth(),
+    date.getFullYear(),
+  );
   return (
     <button
-      data-month={month}
-      onClick={handleClick}
-      id={id}
       type="button"
-      className={`${
-        selectedButtonId !== id ? classes : classes.concat(" selected")
-      }`}>
-      {date}
+      onClick={(e) =>
+        handleClick(e, setSelectedButtonId, setDateForDatePickerButton)
+      }
+      data-cryptoid={cryptoId}
+      data-date={date.getDate()}
+      data-month={date.getMonth()}
+      data-year={date.getFullYear()}
+      className={classes}>
+      {date.getDate()}
     </button>
   );
 }
