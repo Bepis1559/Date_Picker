@@ -7,7 +7,7 @@ export function DatePickerContainer(): ReactElement {
   return (
     <div className="date-picker-container">
       <DatePickerButton setIsDatePickerHidden={setIsDatePickerHidden} />
-      <DatePicker isDatePickerHidden={isDatePickerHidden} />
+      {!isDatePickerHidden && <DatePicker />}
     </div>
   );
 }

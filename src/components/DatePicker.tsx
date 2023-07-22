@@ -3,12 +3,9 @@ import { DatePickerHeader } from "./DatePickerHeader";
 import { DaysOfWeek } from "./DaysOfWeek";
 import { Dates } from "./Dates";
 
-type props = {
-  isDatePickerHidden: boolean;
-};
-export function DatePicker({ isDatePickerHidden }: props): ReactElement {
+export function DatePicker(): ReactElement {
   return (
-    <div className={`${isDatePickerHidden ? "display-none" : "date-picker"}`}>
+    <div className="date-picker">
       <DatePickerHeader />
       <DaysOfWeek />
       <Dates />
